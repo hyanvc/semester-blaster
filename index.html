@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Galaguinho CG</title>
+
+<style>
+body {
+    margin:0;
+    background:black;
+    color:white;
+    text-align:center;
+    font-family: 'Courier New', monospace;
+}
+
+canvas {
+    display:none;
+    margin:auto;
+    background:black;
+}
+
+#menu, #gameover {
+    position:absolute;
+    width:100%;
+    top:40%;
+}
+
+h1 {
+    font-size:48px;
+    margin-bottom:25px;
+}
+
+button {
+    padding:10px 25px;
+    font-size:18px;
+    background:#111;
+    color:white;
+    border:1px solid white;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover {
+    background:white;
+    color:black;
+}
+
+input {
+    margin-top:10px;
+    padding:8px;
+    width:220px;
+    text-align:center;
+    font-size:14px;
+    background:#111;
+    color:white;
+    border:1px solid white;
+}
+
+.helper-text {
+    font-size:14px;
+    opacity:0.7;
+    margin-top:20px;
+}
+</style>
+
+</head>
+<body>
+
+<div id="menu">
+
+    <h1>🚀 Galaguinho CG</h1>
+
+    <button onclick="startGame()">START</button>
+
+    <p class="helper-text">
+        Caso tenha PASSWORD para fases, digite abaixo:
+    </p>
+
+    <input id="passwordInput" placeholder="Digite o password">
+
+</div>
+
+<div id="gameover" style="display:none;">
+    <h1 id="finalText"></h1>
+    <p id="finalScore"></p>
+    <button onclick="restartGame()">RESTART</button>
+</div>
+
+<canvas id="game" width="900" height="600"></canvas>
+
+<script src="script.js"></script>
+
+</body>
+</html>
