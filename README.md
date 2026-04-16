@@ -6,21 +6,23 @@
 
 ## 🎓 Sobre o Projeto
 
-O **Semester-Blaster** é um jogo 2D desenvolvido em **JavaScript puro utilizando a API Canvas**, criado por **Hyan Victor** como projeto da disciplina de **Computação Gráfica**.
+O **Semester-Blaster** é um jogo 2D feito em **JavaScript usando Canvas**, criado como projeto da disciplina de **Computação Gráfica**.
 
-O jogo representa, de forma criativa, a jornada acadêmica de um estudante, onde cada inimigo simboliza uma disciplina e o objetivo é sobreviver aos semestres até enfrentar o maior desafio:
+A ideia foi transformar a vida acadêmica em um jogo: cada inimigo representa uma matéria, e você precisa ir sobrevivendo aos semestres até chegar no final.
 
-💀 **O temido TCC.**
+E como todo mundo já sabe…
+
+💀 **o chefe final é o TCC.**
 
 ---
 
-## 🎮 Gameplay
+## 🎮 Como funciona
 
-* Controle uma nave espacial
-* Derrote inimigos (disciplinas)
-* Colete moedas
-* Evolua sua nave
-* Enfrente o boss final (TCC)
+* Você controla uma nave
+* Vai enfrentando “matérias”
+* Ganha moedas ao derrotar inimigos
+* Pode evoluir a nave
+* E no final encara o boss
 
 ---
 
@@ -33,131 +35,92 @@ O jogo representa, de forma criativa, a jornada acadêmica de um estudante, onde
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙️ O que tem no jogo
 
-* Sistema de fases progressivas
+* Progressão por fases
 * Boss com barra de vida
-* Sistema de upgrade de nave
-* Seleção de dificuldade (Fácil / Médio / Difícil)
-* Minimap em tempo real
-* Interface com menu, loja e informações
-* Sistema de moedas e progressão
+* Sistema de upgrade
+* Escolha de dificuldade (fácil, médio, difícil)
+* Minimap
+* Menu inicial com loja e informações
+* Sistema de moedas
 
 ---
 
-## 🧠 Conceitos de Computação Gráfica
+## 🧠 Conceitos de Computação Gráfica usados
 
-O projeto implementa diversos conceitos fundamentais:
+Esse projeto não é só um joguinho — ele aplica vários conceitos da disciplina:
 
-### ✅ Implementados
+* ✔️ **Set Pixel** (manipulação direta com `ImageData`)
+* ✔️ **Rasterização de linhas** (desenho manual tipo Bresenham)
+* ✔️ **Flood Fill** (preenchimento de região)
+* ✔️ **Transformações** (`translate` e `scale`)
+* ✔️ **Animação 2D** (`requestAnimationFrame`)
+* ✔️ **Viewport / Window** (conversão de coordenadas)
+* ✔️ **Clipping** (Cohen-Sutherland)
+* ✔️ **Textura** (fundo com imagem `space.png`)
+* ✔️ **Input por teclado**
+* ✔️ **Interface gráfica (menu, loja, HUD)**
 
-* ✔️ **Set Pixel**
-
-  * Manipulação direta de pixels com `ImageData`
-
-* ✔️ **Rasterização de Linhas**
-
-  * Implementação manual de linhas (estilo Bresenham)
-
-* ✔️ **Preenchimento de Regiões**
-
-  * Algoritmo Flood Fill
-
-* ✔️ **Transformações Geométricas**
-
-  * Translação (`translate`)
-  * Escala (`scale`)
-
-* ✔️ **Animação 2D**
-
-  * Loop com `requestAnimationFrame`
-
-* ✔️ **Janela e Viewport**
-
-  * Conversão de coordenadas com `worldToViewport`
-
-* ✔️ **Clipping**
-
-  * Algoritmo de Cohen-Sutherland
-
-* ✔️ **Mapeamento de Textura**
-
-  * Aplicação de textura no fundo do jogo (`space.png`)
-
-* ✔️ **Input**
-
-  * Controle via teclado
-
-* ✔️ **Interface Gráfica**
-
-  * Menu inicial
-  * Loja de naves
-  * Sistema de dificuldade
+> Alguns itens mais avançados (tipo círculo/elipse e rotação) não foram implementados.
 
 ---
 
+## 🧩 Estrutura
 
+### `index.html`
 
+Interface geral (menu, layout, canvas)
 
-## 🧩 Estrutura do Projeto
+### `script.js`
 
-### 📄 `index.html`
+Onde está toda a lógica do jogo:
 
-* Interface do jogo
-* Menu, loja e HUD
-
-### 📄 `script.js`
-
-* Lógica completa do jogo:
-
-  * Renderização
-  * Física e colisão
-  * Sistema de fases
-  * Input
-  * IA dos inimigos
+* renderização
+* movimentação
+* colisão
+* inimigos
+* sistema de fases
 
 ---
 
 ## 🎨 Assets
 
-* `gameshow.png` → imagem de apresentação
-* `space.png` → fundo do jogo
+* `gameshow.png` → imagem do jogo (README)
+* `space.png` → fundo
 * `Thanos.png` → boss final
-* `nave*.png` → naves do jogador
+* `nave*.png` → sprites das naves
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias
 
-* HTML5
-* CSS3
-* JavaScript (Vanilla)
+* HTML
+* CSS
+* JavaScript (sem framework)
 * Canvas API
 
 ---
 
-## 📈 Possíveis Melhorias
+## 📈 Ideias de melhoria
 
-* Implementar rasterização de círculo/elipse
-* Adicionar rotação nas entidades
-* Sistema de seleção de nave no menu
-* Efeitos visuais avançados (partículas, glow)
-* Sistema de áudio
-* Persistência com `localStorage`
+* Adicionar rotação nas naves
+* Implementar círculo/elipse na mão
+* Melhorar efeitos visuais (partículas, glow, etc)
+* Adicionar som
+* Salvar progresso
 
 ---
 
 ## 👨‍💻 Autores
 
-**Hyan Victor**
-**Yasmin**
-
-Projeto desenvolvido para fins acadêmicos na disciplina de **Computação Gráfica**.
+* **Hyan Victor** — desenvolvimento principal
+* **Yasmin** — apoio, ideias e testes
 
 ---
 
-## 🏁 Conclusão
+## 🏁 Final
 
-O projeto demonstra, de forma prática, a aplicação de conceitos fundamentais de Computação Gráfica em um ambiente interativo, combinando teoria e implementação em um jogo funcional.
+O projeto foi feito como parte da disciplina, mas acabou virando um jogo completo, aplicando na prática vários conceitos de computação gráfica.
 
 ---
