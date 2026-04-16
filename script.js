@@ -2,6 +2,7 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 let fillDone = false;
+let difficulty = "medio"; // padrão
 
 // ================== MINIMAPA ==================
 const minimap = {
@@ -120,6 +121,25 @@ let showingUpgrade = false;
 // ================== IMAGENS ==================
 const bossImg = new Image();
 bossImg.src = "./Thanos.png";
+
+const bgImg = new Image();
+bgImg.src = "./space.png";
+
+let bgOffset = 0;
+
+function drawBackground() {
+    if (!bgImg.complete) return;
+
+    bgOffset += 0.3;
+
+    ctx.drawImage(bgImg, 0, bgOffset, canvas.width, canvas.height);
+    ctx.drawImage(bgImg, 0, bgOffset - canvas.height, canvas.width, canvas.height);
+
+    if (bgOffset >= canvas.height) {
+        bgOffset = 0;
+    }
+}
+
 
 // ================== PIXEL ==================
 function initPixels() {
@@ -339,7 +359,17 @@ function generatePassword() {
 function createEnemies() {
     enemies = [];
 
-    for (let i = 0; i < 3; i++) {
+    let linhas;
+
+    if (difficulty === "facil") {
+        linhas = 5;
+    } else if (difficulty === "medio") {
+        linhas = 10;
+    } else if (difficulty === "dificil") {
+        linhas = 15;
+    }
+
+    for (let i = 0; i < linhas; i++) {
         for (let j = 0; j < 4; j++) {
             enemies.push({
                 x: 80 + j * 70,
@@ -609,6 +639,10 @@ function drawEnemyShip(x, y, nome) {
 }
 
 function drawShip() {
+    drawShipCustom(ctx, shipLevel);
+}
+
+function drawShipCustom(ctx, level) {
     ctx.fillStyle = "white";
 
     ctx.beginPath();
@@ -618,13 +652,13 @@ function drawShip() {
     ctx.closePath();
     ctx.fill();
 
-    if (shipLevel >= 2) {
+    if (level >= 2) {
         ctx.fillStyle = "cyan";
         ctx.fillRect(-30, 0, 10, 25);
         ctx.fillRect(20, 0, 10, 25);
     }
 
-    if (shipLevel >= 3) {
+    if (level >= 3) {
         ctx.fillStyle = "lime";
         ctx.beginPath();
         ctx.moveTo(0, -40);
@@ -633,7 +667,7 @@ function drawShip() {
         ctx.fill();
     }
 
-    if (shipLevel === 4) {
+    if (level === 4) {
         ctx.fillStyle = "orange";
         ctx.fillRect(-5, 20, 10, 30);
 
@@ -646,86 +680,121 @@ function drawShip() {
     }
 }
 
+
+function drawLaser(x, y, color = "red", direction = "up") {
+    ctx.save();
+
+    ctx.translate(x, y);
+
+    // 🔥 brilho externo
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+
+    // 🔥 corpo do laser
+    ctx.fillStyle = color;
+
+    if (direction === "up") {
+        ctx.fillRect(-2, -12, 4, 12);
+    } else {
+        ctx.fillRect(-2, 0, 4, 12);
+    }
+
+    // 🔥 núcleo mais claro (efeito neon)
+    ctx.fillStyle = "white";
+
+    if (direction === "up") {
+        ctx.fillRect(-1, -12, 2, 12);
+    } else {
+        ctx.fillRect(-1, 0, 2, 12);
+    }
+
+    ctx.restore();
+}
+
 // ================== DRAW ==================
 function draw() {
     if (!gameStarted || gameOver) return;
 
+    // limpa tela
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ================== FUNDO ==================
+    drawBackground();
+
+    // ================== PIXEL BUFFER ==================
     imgData.data.fill(0);
 
     shots.forEach(s => {
-let p1 = worldToViewport(s.x, s.y);
-let p2 = worldToViewport(s.x, s.y - 10);
+        let p1 = worldToViewport(s.x, s.y);
+        let p2 = worldToViewport(s.x, s.y - 10);
 
-drawLine(p1.x, p1.y, p2.x, p2.y, [255, 255, 0]);    });
+        drawLine(p1.x, p1.y, p2.x, p2.y, [255, 255, 0]);
+    });
 
-   enemyShots.forEach(s => {
-    let p1 = worldToViewport(s.x, s.y);
-    let p2 = worldToViewport(s.x, s.y + 10);
+    enemyShots.forEach(s => {
+        let p1 = worldToViewport(s.x, s.y);
+        let p2 = worldToViewport(s.x, s.y + 10);
 
-    drawLine(p1.x, p1.y, p2.x, p2.y, [255, 0, 0]);
-});
+        drawLine(p1.x, p1.y, p2.x, p2.y, [255, 0, 0]);
+    });
+
+    // 🔥 renderiza por cima do fundo
     renderPixels();
 
+    // ================== AGORA LASER (CANVAS NORMAL) ==================
+    shots.forEach(s => {
+        let p = worldToViewport(s.x, s.y);
+        drawLaser(p.x, p.y, "cyan", "up");
+    });
+
+    enemyShots.forEach(s => {
+        let p = worldToViewport(s.x, s.y);
+        drawLaser(p.x, p.y, "red", "down");
+    });
+
+
+    if (level === 3 && boss) {
+    if (bossImg.complete) {
+        let p = worldToViewport(boss.x, boss.y);
+
+        ctx.drawImage(
+            bossImg,
+            p.x,
+            p.y,
+            boss.size,
+            boss.size
+        );
+    }
+
+    // barra de vida
+    ctx.fillStyle = "red";
+    let pBar = worldToViewport(boss.x, boss.y - 20);
+
+    ctx.fillRect(
+        pBar.x,
+        pBar.y,
+        (boss.hp / boss.maxHp) * boss.size,
+        10
+    );
+}
+
+    // ================== RESTO ==================
     if (level !== 3) {
         enemies.forEach(e => {
             if (e.alive) {
-let p = worldToViewport(e.x + 20, e.y + 20);
-drawEnemyShip(p.x, p.y, e.nome);            }
+                let p = worldToViewport(e.x + 20, e.y + 20);
+                drawEnemyShip(p.x, p.y, e.nome);
+            }
         });
     }
 
-    // moedas
-    coinAnimations.forEach(c => {
-        c.progress += 0.05;
-        c.x += (c.targetX - c.x) * 0.1;
-        c.y += (c.targetY - c.y) * 0.1;
-
-        ctx.fillStyle = "yellow";
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
-        ctx.fill();
-    });
-
-    coinAnimations = coinAnimations.filter(c => c.progress < 1);
-
-    // boss
-    if (level === 3 && boss) {
-        if (bossImg.complete) {
-let p = worldToViewport(boss.x, boss.y);
-
-ctx.drawImage(
-    bossImg,
-    p.x,
-    p.y,
-    boss.size,
-    boss.size
-);        }
-
-        ctx.fillStyle = "red";
-      let pBar = worldToViewport(boss.x, boss.y - 20);
-
-ctx.fillRect(
-    pBar.x,
-    pBar.y,
-    (boss.hp / boss.maxHp) * boss.size,
-    10
-);
-    }
-
-    // player
     ctx.save();
-let p = worldToViewport(player.x, player.y);
-ctx.translate(p.x, p.y);    drawShip();
+    let p = worldToViewport(player.x, player.y);
+    ctx.translate(p.x, p.y);
+    drawShip();
     ctx.restore();
-    
-    if (!fillDone) {
-    let fillPoint = worldToViewport(player.x, player.y - 5);
-    floodFill(fillPoint.x, fillPoint.y, [0, 100, 255, 255]);
-    fillDone = true;
-}
 
     drawMinimap();
-
 }
 
 // ================== LOOP ==================
@@ -733,6 +802,72 @@ function loop() {
     update();
     draw();
     requestAnimationFrame(loop);
+}
+
+
+function toggleInfo() {
+    const info = document.getElementById("infoBox");
+    const shop = document.getElementById("shopBox");
+
+    info.style.display = info.style.display === "none" ? "block" : "none";
+    shop.style.display = "none";
+}
+function toggleShop() {
+    const info = document.getElementById("infoBox");
+    const shop = document.getElementById("shopBox");
+
+    const abrindo = shop.style.display === "none";
+
+    shop.style.display = abrindo ? "block" : "none";
+    info.style.display = "none";
+
+    if (abrindo) {
+        drawShipPreview("ship1", 1);
+        drawShipPreview("ship2", 2);
+        drawShipPreview("ship3", 3);
+        drawShipPreview("ship4", 4);
+    }
+}
+
+function toggleInfo() {
+    const info = document.getElementById("infoBox");
+    const shop = document.getElementById("shopBox");
+
+    info.style.display = info.style.display === "none" ? "block" : "none";
+    shop.style.display = "none";
+}
+
+function toggleShop() {
+    const info = document.getElementById("infoBox");
+    const shop = document.getElementById("shopBox");
+
+    shop.style.display = shop.style.display === "none" ? "block" : "none";
+    info.style.display = "none";
+}
+
+function drawShipPreview(canvasId, level) {
+    const c = document.getElementById(canvasId);
+    const ctx2 = c.getContext("2d");
+
+    ctx2.clearRect(0, 0, c.width, c.height);
+
+    ctx2.save();
+
+    // CENTRALIZA
+    ctx2.translate(c.width / 2, c.height / 2);
+
+    // ESCALA PRA CABER BONITO
+    ctx2.scale(0.8, 0.8);
+
+    // 🔥 USA A MESMA FUNÇÃO DO JOGO
+    drawShipCustom(ctx2, level);
+
+    ctx2.restore();
+}
+
+function setDifficulty(level) {
+    difficulty = level;
+    alert("Dificuldade: " + level.toUpperCase());
 }
 
 loop();

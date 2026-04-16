@@ -26,9 +26,11 @@ canvas {
     image-rendering: pixelated;
 }
 #menu, #gameover {
-    position:absolute;
-    width:100%;
-    top:40%;
+   position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 h1 {
@@ -67,6 +69,28 @@ input {
     opacity:0.7;
     margin-top:20px;
 }
+
+.card {
+    border: 1px solid white;
+    padding: 15px;
+    width: 120px;
+    background: #111;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background: white;
+    color: black;
+}
+
+.catalogo {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
 </style>
 
 </head>
@@ -74,9 +98,71 @@ input {
 
 <div id="menu">
 
-    <h1>🚀 Galaguinho CG</h1>
+    <h1>🚀 Semester-Blaster</h1>
 
     <button onclick="startGame()">START</button>
+    <div style="margin-top:15px;">
+    <p>Escolha a dificuldade:</p>
+
+    <button onclick="setDifficulty('facil')">FÁCIL</button>
+    <button onclick="setDifficulty('medio')">MÉDIO</button>
+    <button onclick="setDifficulty('dificil')">DIFÍCIL</button>
+</div>
+    <button onclick="toggleInfo()">INFORMAÇÕES</button>
+    <button onclick="toggleShop()">LOJA</button>
+
+    <div id="infoBox" style="
+    display:none; 
+    margin-top:20px; 
+    max-width:500px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;">
+        <p>
+            🎓 <b>Semester-Blaster</b> é uma jornada acadêmica em forma de batalha espacial.<br><br>
+            Criado por <b>Hyan Victor</b> para a cadeira de Computação Gráfica do Professor Matheus,
+            o jogo transforma o sofrimento universitário em ação intensa.<br><br>
+
+            Cada inimigo representa uma disciplina... e cada fase vencida é um semestre sobrevivido.
+            Mas cuidado: no final dessa jornada te espera o maior desafio de todos...<br><br>
+
+            💀 <b>O temido TCC.</b><br><br>
+
+            Boa sorte. Você vai precisar.
+        </p>
+    </div>
+
+  <div id="shopBox" style="display:none; margin-top:20px;">
+    <h2>🛒 Catálogo de Naves</h2>
+
+    <div class="catalogo">
+
+       <div class="card">
+    <img src="./naveinicial.png" class="ship-img">
+    <h3>Nave 1</h3>
+    <p>Padrão</p>
+</div>
+
+<div class="card">
+    <img src="./nave1.png" class="ship-img">
+    <h3>Nave 2</h3>
+    <p>+ Velocidade de tiro</p>
+</div>
+
+<div class="card">
+    <img src="./nave2.png" class="ship-img">
+    <h3>Nave 3</h3>
+    <p>Tiro rápido</p>
+</div>
+
+<div class="card">
+    <img src="./nave3.png" class="ship-img">
+    <h3>Nave 4</h3>
+    <p>Modo automático</p>
+</div>
+
+    </div>
+</div>
 
     <p class="helper-text">
         Caso tenha PASSWORD para fases, digite abaixo:
