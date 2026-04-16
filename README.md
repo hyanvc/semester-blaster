@@ -1,5 +1,6 @@
 # 🚀 Semester-Blaster
 
+![Menu do jogo](./menu.png)
 ![Gameplay do jogo](./gameshow.png)
 
 ---
